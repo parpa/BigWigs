@@ -1,4 +1,5 @@
 local module, L = BigWigs:ModuleDeclaration("Hakkar", "Zul'Gurub")
+local BC = AceLibrary("Babble-Class-2.2")
 
 module.revision = 30077
 module.enabletrigger = module.translatedName
@@ -107,6 +108,9 @@ L:RegisterTranslations("enUS", function()
 		trigger_aspectOfArlokkFade = "Aspect of Arlokk fades from (.+).", --guessing CHAT_MSG_SPELL_AURA_GONE_SELF // CHAT_MSG_SPELL_AURA_GONE_PARTY // CHAT_MSG_SPELL_AURA_GONE_OTHER
 		bar_aspectOfArlokkCd = "Stun & ThreatDrop CD - Arlokk",
 		bar_aspectOfArlokkDur = " Stunned - Arlokk",
+		c_sonofhakkar = "Son of Hakkar",
+		you = "you",
+		clickme = " >Click Me<",
 	}
 end)
 
@@ -114,61 +118,61 @@ end)
 L:RegisterTranslations("zhCN", function() return {
 	-- Wind汉化修复Turtle-WOW中文数据
 	-- Last update: 2024-06-22
-    cmd = "Hakkar",
+	cmd = "Hakkar",
 
 	mc_cmd = "mc",
-    mc_name = "心控警报",
-    mc_desc = "心控出现时进行警告",
+	mc_name = "心控警报",
+	mc_desc = "心控出现时进行警告",
 
 	siphon_cmd = "siphon",
-    siphon_name = "吸血警报",
-    siphon_desc = "吸血出现时进行警告",
+	siphon_name = "吸血警报",
+	siphon_desc = "吸血出现时进行警告",
 
 	enrage_cmd = "enrage",
-    enrage_name = "激怒警报",
-    enrage_desc = "激怒出现时进行警告",
+	enrage_name = "激怒警报",
+	enrage_desc = "激怒出现时进行警告",
 
 	aspectjeklik_cmd = "aspectjeklik",
-    aspectjeklik_name = "耶克里克变形警报",
-    aspectjeklik_desc = "耶克里克变形出现时进行警告",
+	aspectjeklik_name = "耶克里克变形警报",
+	aspectjeklik_desc = "耶克里克变形出现时进行警告",
 
 	aspectvenoxis_cmd = "aspectvenoxis",
-    aspectvenoxis_name = "温诺希斯变形警报",
-    aspectvenoxis_desc = "温诺希斯变形出现时进行警告",
+	aspectvenoxis_name = "温诺希斯变形警报",
+	aspectvenoxis_desc = "温诺希斯变形出现时进行警告",
 
 	aspectmarli_cmd = "aspectmarli",
-    aspectmarli_name = "玛尔里变形警报",
-    aspectmarli_desc = "玛尔里变形出现时进行警告",
+	aspectmarli_name = "玛尔里变形警报",
+	aspectmarli_desc = "玛尔里变形出现时进行警告",
 
 	aspectthekal_cmd = "aspectthekal",
-    aspectthekal_name = "塞卡尔变形警报",
-    aspectthekal_desc = "塞卡尔变形出现时进行警告",
+	aspectthekal_name = "塞卡尔变形警报",
+	aspectthekal_desc = "塞卡尔变形出现时进行警告",
 
 	aspectarlokk_cmd = "aspectarlokk",
-    aspectarlokk_name = "娅尔罗变形警报",
-    aspectarlokk_desc = "娅尔罗变形出现时进行警告",
+	aspectarlokk_name = "娅尔罗变形警报",
+	aspectarlokk_desc = "娅尔罗变形出现时进行警告",
 	
 	
 	trigger_engage = "骄傲预示着你的世界的终结。来吧，凡人！面对夺魂者的愤怒！", --CHAT_MSG_MONSTER_YELL
 	
 	trigger_enrage = "面对夺魂者的愤怒！", --to be confirmed
-    bar_enrage = "狂暴",
-    msg_enrage = "哈卡狂暴了！",
-    msg_enrage60 = "1分钟后狂暴！",
-    msg_enrage10 = "10秒后狂暴！",
+	bar_enrage = "狂暴",
+	msg_enrage = "哈卡狂暴了！",
+	msg_enrage60 = "1分钟后狂暴！",
+	msg_enrage10 = "10秒后狂暴！",
 	
 	trigger_causeInsanityYou = "你受到了疯狂效果的影响。", --CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE
 	trigger_causeInsanityOther = "(.+)受到了疯狂效果的影响。", --CHAT_MSG_SPELL_PERIODIC_HOSTILEPLAYER_DAMAGE // CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE // CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE
 	trigger_causeInsanityFade = "疯狂效果从(.+)身上消失。", --CHAT_MSG_SPELL_AURA_GONE_SELF // CHAT_MSG_SPELL_AURA_GONE_PARTY // CHAT_MSG_SPELL_AURA_GONE_OTHER
 	trigger_causeInsanityTotem = "哈卡的疯狂施放失败。根基图腾对此免疫。",--CHAT_MSG_SPELL_CREATURE_VS_CREATURE_DAMAGE // CHAT_MSG_SPELL_CREATURE_VS_PARTY_DAMAGE
-    msg_causeInsanity = "心控",
-    bar_causeInsanity = "心控",
-    bar_causeInsanityCd = "心控冷却",
+	msg_causeInsanity = "心控",
+	bar_causeInsanity = "心控",
+	bar_causeInsanityCd = "心控冷却",
 	
 	trigger_bloodSiphon = "哈卡获得了血液虹吸的效果。", --CHAT_MSG_SPELL_PERIODIC_CREATURE_BUFFS
-    msg_bloodSiphon30 = "30秒后吸血！",
-    bar_bloodSiphonDur = "吸血！",
-    bar_bloodSiphonCd = "下一次吸血",
+	msg_bloodSiphon30 = "30秒后吸血！",
+	bar_bloodSiphonDur = "吸血！",
+	bar_bloodSiphonCd = "下一次吸血",
 	
 	--unreliable, as if someone dies this will trigger
 	--trigger_bloodSiphonFade = "Blood Siphon fades from Hakkar.", --CHAT_MSG_SPELL_AURA_GONE_OTHER
@@ -176,44 +180,44 @@ L:RegisterTranslations("zhCN", function() return {
 	trigger_poisonousBloodYou = "你受到了酸性血液效果的影响。", --CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE
 	trigger_poisonousBloodOther = "(.+)受到了酸性血液效果的影响。", --CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE // CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE //CHAT_MSG_SPELL_PERIODIC_HOSTILEPLAYER_DAMAGE
 	trigger_poisonousBloodFade = "酸性血液效果从(.+)身上消失了。", --CHAT_MSG_SPELL_AURA_GONE_SELF // CHAT_MSG_SPELL_AURA_GONE_PARTY // CHAT_MSG_SPELL_AURA_GONE_OTHER
-    bar_poisonousBlood = " 毒血",
+	bar_poisonousBlood = " 毒血",
 	
 	--1.5k dmg + silence 5sec, 45yard
 	trigger_aspectOfJeklik = "受到了耶克里克的守护效果的影响。", --guessing CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE // CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE // CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE //CHAT_MSG_SPELL_PERIODIC_HOSTILEPLAYER_DAMAGE
 	trigger_aspectOfJeklikResist = "哈卡的耶克里克的守护", --guessing ???
-    bar_aspectOfJeklikCd = "沉默冷却 - 耶克里克",
-    bar_aspectOfJeklikDur = "沉默！ - 耶克里克",
+	bar_aspectOfJeklikCd = "沉默冷却 - 耶克里克",
+	bar_aspectOfJeklikDur = "沉默！ - 耶克里克",
 	
 	--30yard, poison volley, 10sec dot, 438dmg + 236 per 2sec, 1.6k dmg total
 	trigger_aspectOfVenoxis = "哈卡的温诺希斯的守护击中", --guessing ???
 	trigger_aspectOfVenoxisResist = "哈卡的温诺希斯的守护被", --guessing ???
-    bar_aspectOfVenoxisCd = "毒性冷却 - 温诺希斯",
+	bar_aspectOfVenoxisCd = "毒性冷却 - 温诺希斯",
 	
 	--6sec stun, single target
 	trigger_aspectOfMarliYou = "你受到了玛尔里的守护效果的影响。", --guessing CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE
 	trigger_aspectOfMarliOther = "(.+)受到了玛尔里的守护效果的影响。", --guessing CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE // CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE //CHAT_MSG_SPELL_PERIODIC_HOSTILEPLAYER_DAMAGE
 	trigger_aspectOfMarliResist = "哈卡的玛尔里的守护", --guessing ???
 	trigger_aspectOfMarliFade = "玛尔里的守护效果从(.+)身上消失了。", --guessing CHAT_MSG_SPELL_AURA_GONE_SELF // CHAT_MSG_SPELL_AURA_GONE_PARTY // CHAT_MSG_SPELL_AURA_GONE_OTHER
-    bar_aspectOfMarliCd = "昏迷冷却 - 玛尔里",
-    bar_aspectOfMarliDur = "昏迷 - 玛尔里",
+	bar_aspectOfMarliCd = "昏迷冷却 - 玛尔里",
+	bar_aspectOfMarliDur = "昏迷 - 玛尔里",
 	
 	--frenzy, 150% attack speed
 	trigger_aspectOfThekal = "哈卡获得了塞卡尔的守护的效果。", --guessing CHAT_MSG_SPELL_PERIODIC_CREATURE_BUFFS
 	trigger_aspectOfThekalFade = "塞卡尔的守护效果从哈卡身上消失。", --guessing CHAT_MSG_SPELL_AURA_GONE_OTHER
-    bar_aspectOfThekalCd = "狂暴冷却 - 塞卡尔",
-    bar_aspectOfThekalDur = "狂暴！ - 塞卡尔",
-    msg_aspectOfThekal = "狂暴 - 宁神射击！",
+	bar_aspectOfThekalCd = "狂暴冷却 - 塞卡尔",
+	bar_aspectOfThekalDur = "狂暴！ - 塞卡尔",
+	msg_aspectOfThekal = "狂暴 - 宁神射击！",
 
 	--2sec stun, single target
-	trigger_aspectOfArlokkYou = "You are afflicted by Aspect of Arlokk.", --guessing CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE
-	trigger_aspectOfArlokkOther = "(.+) is afflicted by Aspect of Arlokk.", --guessing CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE // CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE //CHAT_MSG_SPELL_PERIODIC_HOSTILEPLAYER_DAMAGE
-	trigger_aspectOfArlokkResist = "Hakkar's Aspect of Arlokk", --guessing ???
-	trigger_aspectOfArlokkFade = "Aspect of Arlokk fades from (.+).", --guessing CHAT_MSG_SPELL_AURA_GONE_SELF // CHAT_MSG_SPELL_AURA_GONE_PARTY // CHAT_MSG_SPELL_AURA_GONE_OTHER
-    bar_aspectOfArlokkCd = "哈卡隐身冷却 - 娅尔罗",
-    bar_aspectOfArlokkDur = "隐身 - 娅尔罗",
-    c_sonofhakkar = "哈卡之子",
-    you = "你",
-    clickme = " >点击我<",
+	trigger_aspectOfArlokkYou = "你受到了娅尔罗的守护效果的影响。", --guessing CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE
+	trigger_aspectOfArlokkOther = "(.+)受到了娅尔罗的守护效果的影响。", --guessing CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE // CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE //CHAT_MSG_SPELL_PERIODIC_HOSTILEPLAYER_DAMAGE
+	trigger_aspectOfArlokkResist = "哈卡的娅尔罗的守护", --guessing ???
+	trigger_aspectOfArlokkFade = "娅尔罗的守护效果从(.+)身上消失了。", --guessing CHAT_MSG_SPELL_AURA_GONE_SELF // CHAT_MSG_SPELL_AURA_GONE_PARTY // CHAT_MSG_SPELL_AURA_GONE_OTHER
+	bar_aspectOfArlokkCd = "哈卡隐身冷却 - 娅尔罗",
+	bar_aspectOfArlokkDur = "隐身 - 娅尔罗",
+	c_sonofhakkar = "哈卡之子",
+	you = "你",
+	clickme = " >点击我<",
 } end)
 local timer = {
 	causeInsanityFirstCd = 17,
@@ -402,7 +406,7 @@ end
 function module:CHAT_MSG_COMBAT_HOSTILE_DEATH(msg)
 	BigWigs:CheckForBossDeath(msg, self)
 
-	if (msg == string.format(UNITDIESOTHER, "Son of Hakkar")) and sonDeathTracking then
+	if (msg == string.format(UNITDIESOTHER, L["c_sonofhakkar"])) and sonDeathTracking then
 		self:SonDead()
 	end
 end
@@ -428,7 +432,7 @@ function module:Event(msg)
 
 	elseif string.find(msg, L["trigger_causeInsanityFade"]) then
 		local _, _, causeInsanityFadePerson, _ = string.find(msg, L["trigger_causeInsanityFade"])
-		if causeInsanityFadePerson == "you" then
+		if causeInsanityFadePerson == L["you"] then
 			causeInsanityFadePerson = UnitName("Player")
 		end
 		self:Sync(syncName.causeInsanityFade .. " " .. causeInsanityFadePerson)
@@ -454,7 +458,7 @@ function module:Event(msg)
 
 	elseif string.find(msg, L["trigger_aspectOfMarliFade"]) then
 		local _, _, marliFadePerson, _ = string.find(msg, L["trigger_aspectOfMarliFade"])
-		if marliFadePerson == "you" then
+		if marliFadePerson == L["you"] then
 			marliFadePerson = UnitName("Player")
 		end
 		self:Sync(syncName.marliFade .. " " .. marliFadePerson)
@@ -478,7 +482,7 @@ function module:Event(msg)
 
 	elseif string.find(msg, L["trigger_aspectOfArlokkFade"]) then
 		local _, _, arlokkFadePerson, _ = string.find(msg, L["trigger_aspectOfArlokkFade"])
-		if arlokkFadePerson == "you" then
+		if arlokkFadePerson == L["you"] then
 			arlokkFadePerson = UnitName("Player")
 		end
 		self:Sync(syncName.arlokkFade .. " " .. arlokkFadePerson)
@@ -543,12 +547,12 @@ function module:CauseInsanity(rest)
 		self:Bar("Grounded -" .. L["bar_causeInsanity"], timer.causeInsanityDur, icon.causeInsanity, true, color.causeInsanityDur)
 		self:DelayedBar(timer.causeInsanityDur, L["bar_causeInsanityCd"], timer.causeInsanityCd, icon.causeInsanity, true, color.causeInsanityCd)
 	else
-		self:Bar(rest .. L["bar_causeInsanity"] .. " >Click Me<", timer.causeInsanityDur, icon.causeInsanity, true, color.causeInsanityDur)
-		self:SetCandyBarOnClick("BigWigsBar " .. rest .. L["bar_causeInsanity"] .. " >Click Me<", function(name, button, extra)
+		self:Bar(rest .. L["bar_causeInsanity"] .. L["clickme"], timer.causeInsanityDur, icon.causeInsanity, true, color.causeInsanityDur)
+		self:SetCandyBarOnClick("BigWigsBar " .. rest .. L["bar_causeInsanity"] .. L["clickme"], function(name, button, extra)
 			TargetByName(extra, true)
 		end, rest)
 
-		if UnitClass("Player") == "Mage" or UnitClass("Player") == "Warlock" then
+		if UnitClass("Player") == BC["Mage"] or UnitClass("Player") == BC["Warlock"] then
 			self:Message(rest .. L["msg_causeInsanity"], "Attention", false, nil, false)
 			self:Sound("Info")
 			self:WarningSign(icon.causeInsanity, 0.7)
@@ -565,7 +569,7 @@ function module:CauseInsanity(rest)
 end
 
 function module:CauseInsanityFade(rest)
-	self:RemoveBar(rest .. L["bar_causeInsanity"] .. " >Click Me<")
+	self:RemoveBar(rest .. L["bar_causeInsanity"] .. L["clickme"])
 
 	if (IsRaidLeader() or IsRaidOfficer()) then
 		for i = 1, GetNumRaidMembers() do
@@ -577,10 +581,10 @@ function module:CauseInsanityFade(rest)
 
 	self:Bar(L["bar_causeInsanityCd"], timer.causeInsanityCd, icon.causeInsanity, true, color.causeInsanityCd)
 
-	if UnitClass("Player") == "Priest" then
+	if UnitClass("Player") == BC["Priest"] then
 		self:WarningSign(icon.priestDispel, 0.7)
 		self:Sound("Info")
-	elseif UnitClass("Player") == "Paladin" then
+	elseif UnitClass("Player") == BC["Paladin"] then
 		self:WarningSign(icon.paladinDispel, 0.7)
 		self:Sound("Info")
 	end
@@ -630,7 +634,7 @@ function module:AspectJeklik()
 	self:Bar(L["bar_aspectOfJeklikDur"], timer.jeklikDur, icon.jeklik, true, color.jeklikDur)
 	self:DelayedBar(timer.jeklikDur, L["bar_aspectOfJeklikCd"], timer.jeklikCd, icon.jeklik, true, color.jeklikCd)
 
-	if UnitClass("Player") == "Priest" or UnitClass("Player") == "Paladin" then
+	if UnitClass("Player") == BC["Priest"] or UnitClass("Player") == BC["Paladin"] then
 		self:WarningSign(icon.jeklik, 0.7)
 		self:Sound("Info")
 	end
@@ -659,7 +663,7 @@ function module:AspectThekalStart()
 
 	self:Bar(L["bar_aspectOfThekalDur"], timer.thekalDur, icon.thekal, true, color.thekalDur)
 
-	if UnitClass("Player") == "Hunter" then
+	if UnitClass("Player") == BC["Hunter"] then
 		self:Message(L["msg_aspectOfThekal"], "Important", false, nil, false)
 		self:Sound("Info")
 		self:WarningSign(icon.thekal, 1)
