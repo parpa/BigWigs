@@ -48,6 +48,8 @@ L:RegisterTranslations("enUS", function() return {
 	msg_yellSummon = "Shadowbane Ragefang Summoned!",
 	
 	trigger_engage = "You dare disturb the Dark Rider Lord?",--CHAT_MSG_MONSTER_YELL
+	clickme = " >Click Me!<",
+	you = "you",
 } end )
 
 
@@ -87,13 +89,13 @@ L:RegisterTranslations("zhCN", function() return {
     trigger_empoweredSoulOther = "(.+) is afflicted by Empowered Soul.",--CHAT_MSG_SPELL_PERIODIC_PARTY_DAMAGE // CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_DAMAGE
     bar_empoweredSoul = " 强化灵魂",
     
-    trigger_yellSummon = "I call upon the Scythe of Elune, grant me your power!",--CHAT_MSG_MONSTER_YELL
+    trigger_yellSummon = "艾露恩之镰.*力量",
     bar_summon = "召唤小怪",
     msg_yellSummon = "影刃怒牙已被召唤！",
     
     trigger_engage = "You dare disturb the Dark Rider Lord?",--CHAT_MSG_MONSTER_YELL
     clickme = " >点击我！<",
-    you = "you",
+    you = "你",
 } end )
 local timer = {
 	reaverstormCd = 5.5,
@@ -161,7 +163,7 @@ function module:CHAT_MSG_MONSTER_YELL(msg, sender)
 	if msg == L["trigger_engage"] then
 		module:SendEngageSync()
 	
-	elseif msg == L["trigger_yellSummon"] then
+	elseif string.find(msg, L["trigger_yellSummon"]) then
 		self:Sync(syncName.summon)
 	end
 end
@@ -180,7 +182,7 @@ function module:Event(msg)
 	
 	elseif string.find(msg, L["trigger_boonFade"]) then
 		local _,_, boonFadePlayer, _ = string.find(msg, L["trigger_boonFade"])
-		if boonFadePlayer == "you" then boonFadePlayer = UnitName("Player") end
+		if boonFadePlayer == L["you"] then boonFadePlayer = UnitName("Player") end
 		self:Sync(syncName.boonFade .. " " .. boonFadePlayer)
 
 
@@ -240,8 +242,8 @@ function module:EmpoweredSoul(rest)
 		end
 	end
 	
-	self:Bar(rest..L["bar_empoweredSoul"].. " >Click Me<", timer.empoweredSoul, icon.empoweredSoul, true, color.empoweredSoul)
-	self:SetCandyBarOnClick("BigWigsBar "..rest..L["bar_empoweredSoul"].. " >Click Me<", function(name, button, extra) TargetByName(extra, true) end, rest)
+	self:Bar(rest..L["bar_empoweredSoul"]..L["clickme"], timer.empoweredSoul, icon.empoweredSoul, true, color.empoweredSoul)
+	self:SetCandyBarOnClick("BigWigsBar "..rest..L["bar_empoweredSoul"]..L["clickme"], function(name, button, extra) TargetByName(extra, true) end, rest)
 end
 
 function module:Summon()
