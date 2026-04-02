@@ -120,5 +120,6 @@ end
 
 function module:StartRespawnTimer()
 	self:Message(L["msg_respawn"])
+	self:Sound("Long")
 	self:Bar(L["bar_respawn"], timer.respawn, icon.respawn, true, color.respawn)
 end

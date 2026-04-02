@@ -93,5 +93,6 @@ end
 function module:StartTimer()
 	packDeadCount = packDeadCount + 1
 	-- self:Message(L["msg_respawn"])
+	self:Sound("Long")
 	self:Bar("Imp Pack "..packDeadCount..L["bar_respawn"], timer.respawn, icon.respawn, true, color.respawn)
 end

@@ -6,6 +6,8 @@ assert(BigWigs, "BigWigs not found!")
 
 local L = AceLibrary("AceLocale-2.2"):new("BigWigsSound")
 --~~ local dewdrop = DewdropLib:GetInstance("1.0")
+local locale = GetLocale()
+local useZhCNSounds = locale == "zhCN"
 
 local sounds = {
 	Long = "Interface\\AddOns\\BigWigs\\Sounds\\Long.mp3",
@@ -14,8 +16,8 @@ local sounds = {
 	Alarm = "Interface\\AddOns\\BigWigs\\Sounds\\Alarm.mp3",
 	Victory = "Interface\\AddOns\\BigWigs\\Sounds\\Victory.mp3",
 
-	Beware = "Interface\\AddOns\\BigWigs\\Sounds\\Beware.wav",
-	RunAway = "Interface\\AddOns\\BigWigs\\Sounds\\RunAway.wav",
+	Beware = useZhCNSounds and "Interface\\AddOns\\BigWigs\\Sounds\\Beware.ogg" or "Interface\\AddOns\\BigWigs\\Sounds\\Beware.wav",
+	RunAway = useZhCNSounds and "Interface\\AddOns\\BigWigs\\Sounds\\RunAway.ogg" or "Interface\\AddOns\\BigWigs\\Sounds\\RunAway.wav",
 
 	One = "Interface\\AddOns\\BigWigs\\Sounds\\1.ogg",
 	Two = "Interface\\AddOns\\BigWigs\\Sounds\\2.ogg",
@@ -77,6 +79,7 @@ local sounds = {
 	IgniteDanger = "Interface\\AddOns\\BigWigs\\Sounds\\IgniteDanger.mp3",
 	Pyro = "Interface\\AddOns\\BigWigs\\Sounds\\Pyro.mp3",
 	DropIgnite = "Interface\\AddOns\\BigWigs\\Sounds\\DropIgnite.mp3",
+	BikeHorn = "Interface\\AddOns\\BigWigs\\Sounds\\BikeHorn.ogg",
 }
 
 

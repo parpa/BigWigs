@@ -198,6 +198,7 @@ end
 function module:Immolate()
 	if UnitClass("Player") == BC["Priest"] or UnitClass("Player") == BC["Paladin"] then
 		self:Message(L["msg_immolate"], "Urgent", false, nil, false)
+		self:Sound("Info")
 		self:WarningSign(icon.immolate, 1)
 	end
 end

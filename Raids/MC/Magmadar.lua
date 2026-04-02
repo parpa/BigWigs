@@ -227,5 +227,6 @@ function module:FrenzyFade()
 end
 
 function module:Conflagration()
+	self:Sound("RunAway")
 	self:WarningSign(icon.fireProtPot, 1)
 end
