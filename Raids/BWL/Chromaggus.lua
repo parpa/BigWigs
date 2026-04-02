@@ -1,5 +1,6 @@
 
 local module, L = BigWigs:ModuleDeclaration("Chromaggus", "Blackwing Lair")
+local BC = AceLibrary("Babble-Class-2.2")
 
 module.revision = 30088
 module.enabletrigger = module.translatedName
@@ -28,6 +29,8 @@ L:RegisterTranslations("enUS", function() return {
 	affliction_name = "Afflictions Alert",
 	affliction_desc = "Warn for Afflictions",
 	
+	hit = "hits",
+	crit = "crits",
 
 	trigger_frenzy = "Chromaggus gains Frenzy.", --CHAT_MSG_SPELL_PERIODIC_CREATURE_BUFFS
 	trigger_frenzyFade = "Frenzy fades from Chromaggus.", --CHAT_MSG_SPELL_AURA_GONE_OTHER
@@ -63,6 +66,11 @@ L:RegisterTranslations("enUS", function() return {
 	trigger_vulnerabilityChanged = "flinches as its skin shimmers.", --CHAT_MSG_MONSTER_EMOTE
 	msg_vulnerability = "Current Vulnerability - ",
 	bar_vulnerability = " Vulnerability",
+	breath_timeLapse = "Time Lapse",
+	breath_corrosiveAcid = "Corrosive Acid",
+	breath_igniteFlesh = "Ignite Flesh",
+	breath_incinerate = "Incinerate",
+	breath_frostBurn = "Frost Burn",
 	
 		-- "^[%w]+[%s's]* ([%w%s:]+) ([%w]+) Chromaggus for ([%d]+) ([%w]+) damage%.[%s%(]*([%d]*)"
 		-- [Fashu's] [Firebolt] [hits] Battleguard Sartura for [44] [Fire] damage. ([14] resisted)
@@ -92,6 +100,75 @@ L:RegisterTranslations("enUS", function() return {
 
 	trigger_bronzeYou = "You are afflicted by Brood Affliction: Bronze.", --CHAT_MSG_SPELL_PERIODIC_SELF_DAMAGE
 	msg_bronzeYou = "Brood Affliction: Bronze - Consider using Hourglass Sand",
+} end )
+L:RegisterTranslations("zhCN", function() return {
+	cmd = "Chromaggus",
+
+	frenzy_cmd = "frenzy",
+	frenzy_name = "狂暴警报",
+	frenzy_desc = "狂暴时发出警报。",
+	
+	enrage_cmd = "enrage",
+	enrage_name = "激怒警报",
+	enrage_desc = "激怒时发出警报。",
+
+	breath_cmd = "breath",
+	breath_name = "吐息警报",
+	breath_desc = "提醒吐息施放和计时。",
+
+	vulnerability_cmd = "vulnerability",
+	vulnerability_name = "弱点警报",
+	vulnerability_desc = "弱点变化时发出警报。",
+	
+	affliction_cmd = "affliction",
+	affliction_name = "龙兽症警报",
+	affliction_desc = "龙兽症影响你时发出警报。",
+
+	hit = "击中",
+	crit = "致命一击对",
+
+	trigger_frenzy = "变得极为狂暴！",
+	trigger_frenzyFade = "疯狂效果从克洛玛古斯身上消失。",
+	bar_frenzyCd = "狂暴冷却",
+	bar_frenzyDur = "狂暴！",
+	msg_frenzy = "狂暴！立刻宁神！",
+
+	msg_lowHp = "克洛玛古斯生命低于25% - 即将在20%激怒！",
+
+	trigger_enrage = "克洛玛古斯获得了激怒效果。",
+	msg_enrage = "克洛玛古斯激怒了！",
+
+	trigger_breath = "克洛玛古斯开始施放(.+)。",
+	bar_breathCast = "施放",
+	bar_breathCd = "冷却",
+	msg_breathSoon5 = " 5秒后",
+	msg_breathCast = "正在施放",
+
+	trigger_vulnerabilityChanged = "%s的皮肤闪闪发光，他退缩了。",
+	msg_vulnerability = "当前弱点 - ",
+	bar_vulnerability = " 弱点",
+	breath_timeLapse = "时间流逝",
+	breath_corrosiveAcid = "腐蚀酸液",
+	breath_igniteFlesh = "点燃躯体",
+	breath_incinerate = "焚烧",
+	breath_frostBurn = "冰霜灼烧",
+	
+	trigger_directDamage = "^[^%s]+的([^%s]+)[%s]*([^%s]+)克洛玛古斯造成[%s]*([%d]+)[%s]*点([^%s]+)伤害%。?[%s%(（]*([%d]*)?",
+	trigger_dotDamage = "^[^%s]+的([^%s]+)使克洛玛古斯受到了(%d+)点([^%s]+)伤害。[%s%(（]*([%d]*)?",
+
+	trigger_bronzeYou = "你受到了龙兽症：青铜效果的影响。",
+	msg_bronzeYou = "龙兽症：青铜 - 考虑使用时光沙漏",
+
+	fire = "火焰",
+	frost = "冰霜",
+	shadow = "暗影",
+	nature = "自然",
+	arcane = "奥术",
+	
+	curseofdoom = "厄运诅咒",
+	ignite = "点燃",
+	starfire = "星火术",
+	thunderfury = "雷霆之怒",
 } end )
 
 local timer = {
@@ -180,6 +257,31 @@ local breathA = true
 
 local currentVulnerability = "???"
 local vulnerabilityResetTime = GetTime()
+local currentLocale = GetLocale()
+
+local function PlayerIs(class)
+	return UnitClass("Player") == BC[class]
+end
+
+local function SetBreathStyle(slot, breath)
+	local breathKey
+	if breath == L["breath_corrosiveAcid"] then
+		breathKey = "corrosiveAcid"
+	elseif breath == L["breath_frostBurn"] then
+		breathKey = "frostBurn"
+	elseif breath == L["breath_igniteFlesh"] then
+		breathKey = "igniteFlesh"
+	elseif breath == L["breath_incinerate"] then
+		breathKey = "incinerate"
+	elseif breath == L["breath_timeLapse"] then
+		breathKey = "timeLapse"
+	end
+
+	if not breathKey then return end
+
+	icon["breath"..slot] = icon["breath_"..breathKey]
+	color["breath"..slot] = color["breath_"..breathKey]
+end
 
 function module:OnEnable()
 	--self:RegisterEvent("CHAT_MSG_SAY", "Event") --Debug
@@ -287,29 +389,34 @@ function module:Event(msg)
 	
 	--check for vulnerability from dots
 	if string.find(msg, L["trigger_dotDamage"]) and currentVulnerability == "???" and (GetTime() > (vulnerabilityResetTime + 3)) then
-		local _, _, dmg, school, spellName, partial = string.find(msg, L["trigger_dotDamage"])
-		if hitOrCrit == nil or dmg == nil or school == nil then return end
-		if not type(school) == "string" then return end
+		local dmg, school, spellName, partial
+		if currentLocale == "zhCN" then
+			_, _, spellName, dmg, school, partial = string.find(msg, L["trigger_dotDamage"])
+		else
+			_, _, dmg, school, spellName, partial = string.find(msg, L["trigger_dotDamage"])
+		end
+		if spellName == nil or dmg == nil or school == nil then return end
+		if type(school) ~= "string" then return end
 		dmg = tonumber(dmg)
 		if partial and partial ~= "" then dmg = tonumber(dmg) + tonumber(partial) end
 		
-		if school == "Arcane" then
+		if school == L["arcane"] then
 			if dmg >= 250 then
 				self:Sync(syncName.vulnerability .. " " ..school)
 		end
 			
-		elseif school == "Fire" and not string.find(spellName, "Ignite") then
+		elseif school == L["fire"] and not string.find(spellName, L["ignite"]) then
 			if dmg >= 400 then
 				self:Sync(syncName.vulnerability .. " " ..school)
 	end
 
-		elseif school == "Nature" then
+		elseif school == L["nature"] then
 			if dmg >= 300 then
 				self:Sync(syncName.vulnerability .. " " ..school)
 	end
 
-		elseif school == "Shadow" then
-			if string.find(spellName, "Curse of Doom") then
+		elseif school == L["shadow"] then
+			if string.find(spellName, L["curseofdoom"]) then
 				if dmg >= 3000 then
 					self:Sync(syncName.vulnerability .. " " ..school)
 					end
@@ -327,13 +434,13 @@ function module:Event(msg)
 		local hit = nil
 		local crit = nil
 		if hitOrCrit == nil or dmg == nil or school == nil then return end
-		if not type(school) == "string" then return end
-		if hitOrCrit == "hits" then hit = true elseif hitOrCrit == "crits" then crit = true end
+		if type(school) ~= "string" then return end
+		if hitOrCrit == L["hit"] then hit = true elseif hitOrCrit == L["crit"] then crit = true end
 		dmg = tonumber(dmg)
 		if partial and partial ~= "" then dmg = tonumber(dmg) + tonumber(partial) end
 		
-		if school == "Arcane" then
-			if string.find(spellName, "Starfire") then
+		if school == L["arcane"] then
+			if string.find(spellName, L["starfire"]) then
 				if (hit and dmg >= 800) or (crit and dmg >= 1200) then 
 					self:Sync(syncName.vulnerability .. " " ..school)
 				end
@@ -343,18 +450,18 @@ function module:Event(msg)
 					end
 				end
 			
-		elseif school == "Fire" then
+		elseif school == L["fire"] then
 			if (hit and dmg >= 1300) or (crit and dmg >= 2600) then 
 				self:Sync(syncName.vulnerability .. " " ..school)
 						end
 		
-		elseif school == "Frost" then
+		elseif school == L["frost"] then
 			if (hit and dmg >= 800) or (crit and dmg >= 1600) then 
 				self:Sync(syncName.vulnerability .. " " ..school)
 						end
 		
-		elseif school == "Nature" then
-			if string.find(spellName, "Thunderfury") then
+		elseif school == L["nature"] then
+			if string.find(spellName, L["thunderfury"]) then
 				if (hit and dmg >= 800) or (crit and dmg >= 1200) then 
 					self:Sync(syncName.vulnerability .. " " ..school)
 					end
@@ -364,7 +471,7 @@ function module:Event(msg)
 						end
 						end
 		
-		elseif school == "Shadow" then
+		elseif school == L["shadow"] then
 			if (hit and dmg >= 1700) or (crit and dmg >= 3400) then 
 				self:Sync(syncName.vulnerability .. " " ..school)
 					end
@@ -401,7 +508,7 @@ function module:BigWigs_RecvSync(sync, rest, nick)
 function module:Frenzy()
 	self:RemoveBar(L["bar_frenzyCd"])
 	
-	if UnitClass("Player") == "Hunter" then
+	if PlayerIs("Hunter") then
 		self:Message(L["msg_frenzy"], "Urgent", false, nil, false)
 		self:Sound("Info")
 		self:WarningSign(icon.tranquil, 1)
@@ -445,42 +552,12 @@ function module:Breath(rest)
 	
 	if breath1 == "???" and breathA then
 		breath1 = rest
-		if breath1 == "Corrosive Acid" then
-			icon.breath1 = icon.breath_corrosiveAcid
-			color.breath1 = color.breath_corrosiveAcid
-		elseif breath1 == "Frost Burn" then
-			icon.breath1 = icon.breath_frostBurn
-			color.breath1 = color.breath_frostBurn
-		elseif breath1 == "Ignite Flesh" then
-			icon.breath1 = icon.breath_igniteFlesh
-			color.breath1 = color.breath_igniteFlesh
-		elseif breath1 == "Incinerate" then
-			icon.breath1 = icon.breath_incinerate
-			color.breath1 = color.breath_incinerate
-		elseif breath1 == "Time Lapse" then
-			icon.breath1 = icon.breath_timeLapse
-			color.breath1 = color.breath_timeLapse
-				end
+		SetBreathStyle(1, breath1)
 		
 	elseif breath2 == "???" and not breathA then
 		breath2 = rest
-		if breath2 == "Corrosive Acid" then
-			icon.breath2 = icon.breath_corrosiveAcid
-			color.breath2 = color.breath_corrosiveAcid
-		elseif breath2 == "Frost Burn" then
-			icon.breath2 = icon.breath_frostBurn
-			color.breath2 = color.breath_frostBurn
-		elseif breath2 == "Ignite Flesh" then
-			icon.breath2 = icon.breath_igniteFlesh
-			color.breath2 = color.breath_igniteFlesh
-		elseif breath2 == "Incinerate" then
-			icon.breath2 = icon.breath_incinerate
-			color.breath2 = color.breath_incinerate
-		elseif breath2 == "Time Lapse" then
-			icon.breath2 = icon.breath_timeLapse
-			color.breath2 = color.breath_timeLapse
-					end
-					end
+		SetBreathStyle(2, breath2)
+	end
 	
 	if breathA then
 		self:Message(L["msg_breathCast"]..breath1, "Attention", false, nil, false)
@@ -529,38 +606,38 @@ function module:Vulnerability(rest)
 	if rest == "???" then
 		vulnerabilityResetTime = GetTime()
 	elseif (GetTime() > (vulnerabilityResetTime + 3)) then
-		if currentVulnerability == "Arcane" then
+		if currentVulnerability == L["arcane"] then
 			icon.vulnerability = icon.vulnerability_arcane
 			color.vulnerability = color.vulnerability_arcane
-			if UnitClass("Player") == "Mage" or UnitClass("Player") == "Druid" then
+			if PlayerIs("Mage") or PlayerIs("Druid") then
 				self:WarningSign(icon.vulnerability, 1)
 		end
 
-		elseif currentVulnerability == "Fire" then
+		elseif currentVulnerability == L["fire"] then
 			icon.vulnerability = icon.vulnerability_fire
 			color.vulnerability = color.vulnerability_fire
-			if UnitClass("Player") == "Mage" or UnitClass("Player") == "Warlock" then
+			if PlayerIs("Mage") or PlayerIs("Warlock") then
 				self:WarningSign(icon.vulnerability, 1)
 			end
 
-		elseif currentVulnerability == "Frost" then
+		elseif currentVulnerability == L["frost"] then
 			icon.vulnerability = icon.vulnerability_frost
 			color.vulnerability = color.vulnerability_frost
-			if UnitClass("Player") == "Mage" then
+			if PlayerIs("Mage") then
 				self:WarningSign(icon.vulnerability, 1)
 			end
 			
-		elseif currentVulnerability == "Nature" then
+		elseif currentVulnerability == L["nature"] then
 			icon.vulnerability = icon.vulnerability_nature
 			color.vulnerability = color.vulnerability_nature
-			if UnitClass("Player") == "Shaman" or UnitClass("Player") == "Druid" then
+			if PlayerIs("Shaman") or PlayerIs("Druid") then
 				self:WarningSign(icon.vulnerability, 1)
 		end
 			
-		elseif currentVulnerability == "Shadow" then
+		elseif currentVulnerability == L["shadow"] then
 			icon.vulnerability = icon.vulnerability_shadow
 			color.vulnerability = color.vulnerability_shadow
-			if UnitClass("Player") == "Warlock" or UnitClass("Player") == "Priest" then
+			if PlayerIs("Warlock") or PlayerIs("Priest") then
 				self:WarningSign(icon.vulnerability, 1)
 			end
 		end

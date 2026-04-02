@@ -1,9 +1,13 @@
 
 local module, L = BigWigs:ModuleDeclaration("Razorgore the Untamed", "Blackwing Lair")
+local BC = AceLibrary("Babble-Class-2.2")
 local controller = AceLibrary("Babble-Boss-2.2")["Grethok the Controller"]
+local guardsman = AceLibrary("Babble-Boss-2.2")["Blackwing Guardsman"]
+local razorgore = AceLibrary("Babble-Boss-2.2")["Razorgore the Untamed"]
+local bwl = AceLibrary("Babble-Zone-2.2")["Blackwing Lair"]
 
 module.revision = 30085
-module.enabletrigger = {"Razorgore the Untamed", "Grethok the Controller"}
+module.enabletrigger = {razorgore, controller}
 module.toggleoptions = {"polymorph", "dominatemind", "icon", "slow", -1, "phase", "eggs", "orb", "mindexhaustion", -1, "volley", "conflagration", "warstomp", "bosskill"}
 
 L:RegisterTranslations("enUS", function() return {
@@ -130,6 +134,91 @@ L:RegisterTranslations("enUS", function() return {
 	trigger_warStomp = "Razorgore the Untamed's War Stomp", --CHAT_MSG_SPELL_CREATURE_VS_SELF_DAMAGE // CHAT_MSG_SPELL_CREATURE_VS_PARTY_DAMAGE // CHAT_MSG_SPELL_CREATURE_VS_CREATURE_DAMAGE
 	bar_warStompDur = "War Stomped",
 	bar_warStompCd = "War Stomp CD",
+	you = "you",
+} end)
+L:RegisterTranslations("zhCN", function() return {
+	cmd = "Razorgore",
+
+	polymorph_cmd = "polymorph",
+	polymorph_name = "变形警报",
+	polymorph_desc = "变形出现时进行警告",
+	dominatemind_cmd = "dominatemind",
+	dominatemind_name = "统御意志警报",
+	dominatemind_desc = "统御意志出现时进行警告",
+	icon_cmd = "icon",
+	icon_name = "统御意志团队图标",
+	icon_desc = "在统御意志目标上标记团队图标",
+	slow_cmd = "slow",
+	slow_name = "减速警报",
+	slow_desc = "减速出现时进行警告",
+	phase_cmd = "phase",
+	phase_name = "阶段转换警报",
+	phase_desc = "阶段转换出现时进行警告",
+	eggs_cmd = "eggs",
+	eggs_name = "龙蛋计数器",
+	eggs_desc = "已摧毁的黑龙蛋计数",
+	orb_cmd = "orb",
+	orb_name = "控制宝珠警报",
+	orb_desc = "控制宝珠出现时进行警告",
+	mindexhaustion_cmd = "mindexhaustion",
+	mindexhaustion_name = "心灵疲惫警报",
+	mindexhaustion_desc = "心灵疲惫出现时进行警告",
+	volley_cmd = "volley",
+	volley_name = "连珠火球警报",
+	volley_desc = "连珠火球出现时进行警告",
+	conflagration_cmd = "conflagration",
+	conflagration_name = "燃烧警报",
+	conflagration_desc = "燃烧出现时进行警告",
+	warstomp_cmd = "warstomp",
+	warstomp_name = "战争践踏警报",
+	warstomp_desc = "战争践踏出现时进行警告",
+
+	trigger_engage = "入侵者闯入了孵化间！",
+	trigger_polyYou = "你受到了强效变形术效果的影响。",
+	trigger_polyOther = "(.+)受到了强效变形术效果的影响。",
+	trigger_polyFade = "强效变形术效果从(.+)身上消失了。",
+	bar_poly = " 变形",
+	msg_poly = " 变形 - 驱散！",
+	trigger_mcYou = "你受到了统御意志效果的影响",
+	trigger_mcOther2 = "(.+)[%(（].+[%)）]受到了统御意志效果的影响",
+	trigger_mcOther = "(.+)受到了统御意志效果的影响",
+	trigger_mcFade = "统御意志效果从(.+)身上消失了。",
+	bar_mc = " 精神控制",
+	msg_mc = " 精神控制 - 驱散！",
+	trigger_slow = "受到了减速术效果的影响。",
+	bar_slow = "减速",
+	msg_slow = "减速 - 驱散！",
+	bar_mobsSpawn = "小怪刷新",
+	trigger_destroyEggCast = "施放摧毁蛋",
+	bar_destroyEggCast = "正在摧毁龙蛋",
+	bar_destroyEggCd = "摧毁龙蛋冷却",
+	bar_eggsCounter = "剩余龙蛋",
+	msg_eggCounter = "/30 已摧毁龙蛋",
+	trigger_mindExhaustionYou = "你受到了心灵疲惫效果的影响。",
+	trigger_mindExhaustionOther = "(.+)受到了心灵疲惫效果的影响。",
+	trigger_mindExhaustionFade = "心灵疲惫效果从(.+)身上消失了。",
+	bar_mindExhaustion = " 心灵疲惫",
+	bar_orb = " 控制宝珠",
+	msg_orb = " 正在控制拉佐格尔",
+	msg_orbFade = "拉佐格尔失控了！",
+	trigger_phase3 = "当球体的控制力耗尽时，奈法利安的军队四散奔逃。",
+	msg_phase3 = "所有龙蛋已被摧毁 - 第三阶段 - 击杀BOSS！",
+	trigger_volleyCast = "狂野的拉佐格尔开始施放连珠火球。",
+	bar_volleyCd = "连珠火球冷却",
+	bar_volleyCast = "正在施放连珠火球",
+	msg_volley = "连珠火球 - 躲避！",
+	trigger_conflagrationYou = "你受到了燃烧效果的影响。",
+	trigger_conflagrationOther = "(.+)受到了燃烧效果的影响。",
+	trigger_conflagrationFade = "燃烧效果从(.+)身上消失了。",
+	bar_conflagrationCd = "燃烧冷却",
+	bar_conflagrationDur = " 燃烧",
+	msg_conflagration = " 燃烧",
+	trigger_conflagHitYou = "燃烧击中你造成",
+	msg_conflagHitYou = "远离被燃烧的人，笨蛋！！！",
+	trigger_warStomp = "狂野的拉佐格尔的战争践踏",
+	bar_warStompDur = "战争践踏",
+	bar_warStompCd = "战争践踏冷却",
+	you = "你",
 } end)
 
 local timer = {
@@ -234,6 +323,10 @@ local orbController = nil
 local destroyEggTime = 0
 local addDead = 0
 
+local function PlayerIs(class)
+	return UnitClass("Player") == BC[class]
+end
+
 function module:OnEnable()
 	--self:RegisterEvent("CHAT_MSG_SAY", "Event") --Debug
 	
@@ -314,12 +407,12 @@ end
 function module:CHAT_MSG_COMBAT_HOSTILE_DEATH(msg)
 	BigWigs:CheckForBossDeath(msg, self)
 
-	if (msg == string.format(UNITDIESOTHER, "Grethok the Controller")) then
+	if (msg == string.format(UNITDIESOTHER, controller)) then
 		addDead = addDead + 1
 		if addDead == 3 then
 			--self:Sync(syncName.phase2)
 		end
-	elseif (msg == string.format(UNITDIESOTHER, "Blackwing Guardsman")) then
+	elseif (msg == string.format(UNITDIESOTHER, guardsman)) then
 		addDead = addDead + 1
 		if addDead == 3 then
 			--self:Sync(syncName.phase2)
@@ -350,7 +443,7 @@ function module:Event(msg)
 		
 	elseif string.find(msg, L["trigger_polyFade"]) then
 		local _,_,polyFadePlayer,_ = string.find(msg, L["trigger_polyFade"])
-		if polyFadePlayer == "you" then polyFadePlayer = UnitName("Player") end
+		if polyFadePlayer == L["you"] then polyFadePlayer = UnitName("Player") end
 		self:Sync(syncName.polymorphFade .. " " .. polyFadePlayer)
 		
 		
@@ -367,7 +460,7 @@ function module:Event(msg)
 		
 	elseif string.find(msg, L["trigger_mcFade"]) then
 		local _,_,mcFadePlayer,_ = string.find(msg, L["trigger_mcFade"])
-		if mcFadePlayer == "you" then mcFadePlayer = UnitName("Player") end
+		if mcFadePlayer == L["you"] then mcFadePlayer = UnitName("Player") end
 		self:Sync(syncName.mcFade .. " " .. mcFadePlayer)
 		
 	
@@ -396,7 +489,7 @@ function module:Event(msg)
 		self:CancelScheduledEvent("Razorgore_DestroyEgg")
 		
 		local _,_,mindExhaustionFadePlayer,_ = string.find(msg, L["trigger_mindExhaustionFade"])
-		if mindExhaustionFadePlayer == "you" then mindExhaustionFadePlayer = UnitName("Player") end
+		if mindExhaustionFadePlayer == L["you"] then mindExhaustionFadePlayer = UnitName("Player") end
 		self:Sync(syncName.mindExhaustionFade .. " " .. mindExhaustionFadePlayer)
 
 
@@ -415,7 +508,7 @@ function module:Event(msg)
 		
 	elseif string.find(msg, L["trigger_conflagrationFade"]) then
 		local _,_,conflagFadePlayer,_ = string.find(msg, L["trigger_conflagrationFade"])
-		if conflagFadePlayer == "you" then conflagFadePlayer = UnitName("Player") end
+		if conflagFadePlayer == L["you"] then conflagFadePlayer = UnitName("Player") end
 		self:Sync(syncName.conflagrationFade .. " " .. conflagFadePlayer)
 	
 	elseif string.find(msg, L["trigger_conflagHitYou"]) and self.db.profile.conflagration and not string.find(msg, "Your Conflagration hits you for") then
@@ -487,7 +580,7 @@ end
 function module:Polymorph(rest)
 	self:Bar(rest..L["bar_poly"], timer.polymorph, icon.polymorph, true, color.polymorph)
 	
-	if UnitClass("Player") == "Priest" or UnitClass("Player") == "Paladin" then 
+	if PlayerIs("Priest") or PlayerIs("Paladin") then 
 		self:Message(rest..L["msg_poly"], "Important", false, nil, false)
 		self:Sound("Info")
 		self:WarningSign(icon.polymorph, 1)
@@ -501,7 +594,7 @@ end
 function module:Mc(rest)
 	self:Bar(rest..L["bar_mc"], timer.mc, icon.mc, true, color.mc)
 	
-	if UnitClass("Player") == "Priest" or UnitClass("Player") == "Paladin" then 
+	if PlayerIs("Priest") or PlayerIs("Paladin") then 
 		self:Message(rest..L["msg_mc"], "Important", false, nil, false)
 		self:Sound("Info")
 		self:WarningSign(icon.mc, 1)
@@ -515,7 +608,7 @@ end
 function module:Slow()
 	self:Bar(L["bar_slow"], timer.slow, icon.slow, true, color.slow)
 	
-	if UnitClass("Player") == "Priest" or UnitClass("Player") == "Paladin" then 
+	if PlayerIs("Priest") or PlayerIs("Paladin") then 
 		self:Message(L["msg_slow"], "Important", false, nil, false)
 		self:Sound("Info")
 		self:WarningSign(icon.slow, 1)
@@ -527,16 +620,16 @@ function module:OrbControlCheck()
 	
 	if orbController == nil then
 		for i=1,GetNumRaidMembers() do
-			if UnitName("RaidPet"..i) == "Razorgore the Untamed" then
+			if UnitName("RaidPet"..i) == razorgore then
 				self:Sync(syncName.orb .. " " .. UnitName("Raid"..i))
 				orbController = UnitName("Raid"..i)
 				break
 			end
 		end
 		
-	elseif orbController ~= nil and GetRealZoneText() == "Blackwing Lair" then
+	elseif orbController ~= nil and GetRealZoneText() == bwl then
 		for i=1,GetNumRaidMembers() do
-			if UnitName("RaidPet"..i) == "Razorgore the Untamed" then
+			if UnitName("RaidPet"..i) == razorgore then
 				orbIsControlled = true
 				break
 			end

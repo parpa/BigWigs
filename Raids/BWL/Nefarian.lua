@@ -1,9 +1,11 @@
 
 local module, L = BigWigs:ModuleDeclaration("Nefarian", "Blackwing Lair")
+local BC = AceLibrary("Babble-Class-2.2")
 local victor = AceLibrary("Babble-Boss-2.2")["Lord Victor Nefarius"]
+local nefarian = AceLibrary("Babble-Boss-2.2")["Nefarian"]
 
 module.revision = 30086
-module.enabletrigger = {"Nefarian", "Lord Victor Nefarius"}
+module.enabletrigger = {nefarian, victor}
 module.toggleoptions = {
 	"mc",
 	"icon",
@@ -195,6 +197,189 @@ L:RegisterTranslations("enUS", function() return {
 	
 	trigger_parryYou = "You attack. Nefarian parries.", --CHAT_MSG_COMBAT_SELF_MISSES
 	msg_parryYou = "Nefarian Parried your attack - Stop killing the tank you idiot!",
+
+	ndrakoniddies = " Drakonid dies.",
+	drakonid = "Drakonid",
+	Red = "Red",
+	Blue = "Blue",
+	Green = "Green",
+	Black = "Black",
+	Bronze = "Bronze",
+	you = "you",
+} end)
+L:RegisterTranslations("zhCN", function() return {
+	cmd = "Nefarian",
+
+--Phase 1
+	mc_cmd = "mc",
+	mc_name = "精神控制警报",
+	mc_desc = "精神控制出现时进行警告",
+	
+	icon_cmd = "icon",
+	icon_name = "精神控制团队图标",
+	icon_desc = "在精神控制目标上标记团队图标",
+	
+	drakonidcolor_cmd = "drakonidcolor",
+	drakonidcolor_name = "龙兽颜色警报",
+	drakonidcolor_desc = "根据龙兽的颜色进行警告",
+	
+	drakonidcounter_cmd = "drakonidcounter",
+	drakonidcounter_name = "龙兽计数器",
+	drakonidcounter_desc = "记录已击杀的龙兽数量",
+	
+	landingparty_cmd = "landingparty",
+	landingparty_name = "登陆小队警报",
+	landingparty_desc = "登陆小队出现时进行警告",
+	
+--Phase 2
+	shadowflame_cmd = "shadowflame",
+	shadowflame_name = "暗影烈焰警报",
+	shadowflame_desc = "暗影烈焰出现时进行警告",
+
+	fear_cmd = "fear",
+	fear_name = "恐惧警报",
+	fear_desc = "奈法利安施放群体恐惧时进行警告",
+	
+	curse_cmd = "curse",
+	curse_name = "暗影迷雾",
+	curse_desc = "显示暗影迷雾的计时条",
+	
+	classcall_cmd = "classcall",
+	classcall_name = "职业点名警报",
+	classcall_desc = "职业点名出现时进行警告",
+	
+	wildpolymorph_cmd = "wildpolymorph",
+	wildpolymorph_name = "狂野变形警报",
+	wildpolymorph_desc = "狂野变形出现时进行警告",
+	
+	corruptedhealing_cmd = "corruptedhealing",
+	corruptedhealing_name = "堕落治疗警报",
+	corruptedhealing_desc = "堕落治疗出现时进行警告",
+	
+	bopnef_cmd = "bopnef",
+	bopnef_name = "奈法利安的保护祝福警报",
+	bopnef_desc = "奈法利安受到保护祝福时进行警告",
+	
+	boneconstructs_cmd = "boneconstructs",
+	boneconstructs_name = "白骨魔像警报",
+	boneconstructs_desc = "白骨魔像出现时进行警告",
+	
+	taillash_cmd = "taillash",
+	taillash_name = "龙尾扫击警报",
+	taillash_desc = "龙尾扫击出现时进行警告",
+	
+	parry_cmd = "parry",
+	parry_name = "招架警报",
+	parry_desc = "招架出现时进行警告",
+
+--Phase 1
+	trigger_engage = "让游戏开始！",
+	bar_mobsSpawn = "龙兽刷新",
+	
+	trigger_mcYou = "你受到了暗影命令效果的影响",
+	trigger_mcOther2 = "(.+)（.+）受到了暗影命令效果的影响",
+	trigger_mcOther = "(.+)受到了暗影命令效果的影响",
+	trigger_mcFade = "暗影命令效果从(.+)身上消失了。",
+	bar_mc = " 精神控制",
+	msg_mc = " 精神控制 - 变羊！",
+	trigger_deadOther = "(.+)死亡了。",
+	
+	bar_addCounter = "剩余龙兽",
+	msg_red = "红色龙兽 - 造成：火焰锥形堆叠DOT - 抵抗：火焰",
+	msg_blue = "蓝色龙兽 - 造成：法力吸取和减速 - 抵抗：冰霜和奥术",
+	msg_green = "绿色龙兽 - 造成：眩晕 - 抵抗：自然",
+	msg_black = "黑色龙兽 - 造成：火焰攻击 - 抵抗：暗影和火焰",
+	msg_bronze = "青铜龙兽 - 造成：减速攻击和施法速度 - 抵抗：奥术",
+	
+	msg_landingParty = "奈法利安即将降落，登陆小队就位！",
+
+--Phase 2
+	trigger_landingStart = "够了",
+	bar_landingShadowFlame = "群体暗影烈焰",
+	bar_landingStart = "奈法利安降落",
+	msg_landingStart = "奈法利安正在降落！",
+	
+	trigger_landingNow = "燃烧吧！你们这些悲惨的家伙！燃烧吧！",
+	
+	trigger_shadowFlame = "奈法利安开始施放暗影烈焰。",
+	bar_shadowFlameCd = "暗影烈焰冷却",
+	bar_shadowFlameCast = "正在施放暗影烈焰",
+	msg_shadowFlameCast = "正在施放暗影烈焰！",
+	
+	trigger_fear = "奈法利安开始施放低沉咆哮。",
+	bar_fearCd = "恐惧冷却",
+	bar_fearSoon = "即将恐惧...",
+	bar_fearCast = "正在施放恐惧！",
+	msg_fearCast = "正在施放恐惧！",
+	
+	trigger_fearWard = "你获得了防护恐惧结界的效果。",
+	trigger_fearWardFade = "防护恐惧结界效果从你身上消失了。",
+	msg_fearWard = "你获得了防护恐惧结界！",
+	msg_fearWardFade = "防护恐惧结界消失",
+	
+	trigger_curseYou = "你受到了暗影迷雾效果的影响。",
+	trigger_curseOther = "(.+)受到了暗影迷雾效果的影响。",
+	trigger_curseFade = "暗影迷雾效果从(.+)身上消失了。",
+	bar_curseCd = "暗影迷雾冷却",
+	bar_curseDur = " 暗影迷雾",
+	msg_curse = " 暗影迷雾 - 快解除诅咒！",
+
+	trigger_classCall_Druid = "德鲁伊和你们愚蠢的变形法术",
+	trigger_classCall_Hunter = "猎人们，还有你们那讨厌的玩具",
+	trigger_classCall_Mage = "你们也是法师？",
+	trigger_classCall_Paladin = "听说你们有无数条命",
+	trigger_classCall_Priest = "牧师们！如果你们要继续这么治疗",
+	trigger_classCall_Rogue = "潜行者？不要躲躲藏藏了",
+	trigger_classCall_Shaman = "萨满祭司，让我看看你们的图腾",
+	trigger_classCall_Warlock = "术士们，不要随便去尝试那些",
+	trigger_classCall_Warrior = "战士们，我知道你们可以更加勇猛",
+	
+	bar_classCall = "职业点名",
+	
+	msg_classCall_Druid = "德鲁伊职业点名 - 被困在猫形态！",
+	msg_classCall_Hunter = "猎人职业点名 - 远程武器损坏！",
+	msg_classCall_Mage = "法师职业点名 - 随机变羊 - 法师使用冰箱或远离！",
+	msg_classCall_Paladin = "圣骑士职业点名 - 奈法利安受到保护祝福！",
+	msg_classCall_Priest = "牧师职业点名 - 直接治疗会造成伤害 - 请只使用恢复/盾！",
+	msg_classCall_Rogue = "潜行者职业点名 - 潜行者被传送到Boss前方并定身 - 转换Boss方向！",
+	msg_classCall_Shaman = "萨满职业点名 - 消灭图腾！",
+	msg_classCall_Warlock = "术士职业点名 - 消灭地狱火！",
+	msg_classCall_Warrior = "战士职业点名 - 被困在狂暴姿态！",
+	
+	msg_classCall_soon3 = "3秒后职业点名 - 猎人切换远程武器！",
+	
+	trigger_wildPolymorphYou = "你受到了狂野变形效果的影响。",
+	trigger_wildPolymorphOther = "(.+)受到了狂野变形效果的影响。",
+	trigger_wildPolymorphFade = "狂野变形效果从(.+)身上消失了。",
+	bar_wildPolymorph = " 变羊",
+	msg_wildPolymorph = " 变羊 - 快驱散！",
+	
+	trigger_corruptedHealing = "afflicted by Corrupted Healing",
+	msg_corruptedHealing = "牧师的直接治疗导致了堕落治疗(伤害)！",
+	
+	trigger_bopNef = "Nefarian gains Improved Blessing of Protection.",
+	trigger_bopNefFade = "Improved Blessing of Protection fades from Nefarian.",
+	bar_bopNef = "奈法利安保护祝福",
+	
+	msg_lowHp = "奈法利安血量低于25% - 即将出现白骨魔像（20%时）！",
+	
+	trigger_boneConstructs = "不可能！出现吧，我的仆人！",
+	msg_boneConstructs = "白骨魔像即将到来 - 快使用AOE技能！",
+	
+	trigger_tailLash = "Nefarian's Tail Lash hits you",
+	msg_tailLash = "龙尾扫击击中BOSS后方30码范围内。",
+	
+	trigger_parryYou = "You attack. Nefarian parries.",
+	msg_parryYou = "奈法利安招架了你的攻击 - 别再害坦克了，笨蛋！",
+
+	ndrakoniddies = "龙兽死亡了",
+	drakonid = "龙兽",
+	Red = "红色",
+	Blue = "蓝色",
+	Green = "绿色",
+	Black = "黑色",
+	Bronze = "青铜",
+	you = "你",
 } end)
 
 local timer = {
@@ -342,6 +527,10 @@ local bronzeFound = nil
 local bopNefFadeCheck = nil
 local pallyCallTime = 0
 
+local function PlayerIs(class)
+	return UnitClass("Player") == BC[class]
+end
+
 function module:OnEnable()
 	--self:RegisterEvent("CHAT_MSG_SAY", "Event") --Debug
 
@@ -437,7 +626,7 @@ end
 function module:CHAT_MSG_COMBAT_HOSTILE_DEATH(msg)
 	BigWigs:CheckForBossDeath(msg, self)
 
-	if string.find(msg, " Drakonid dies.") then
+	if string.find(msg, L["ndrakoniddies"]) then
 		drakonidsSelfCount = drakonidsSelfCount + 1
 		if drakonidsSelfCount <= drakonidsDeadMax then
 			self:Sync(syncName.addDead .. " " .. drakonidsSelfCount)
@@ -502,16 +691,16 @@ end
 
 function module:PLAYER_TARGET_CHANGED()
 	if phase == "phase1" and UnitName("Target") ~= nil then
-		if string.find(UnitName("Target"), " Drakonid") then
-			if string.find(UnitName("Target"), "Red") and not redFound then
+		if string.find(UnitName("Target"), L["drakonid"]) then
+			if string.find(UnitName("Target"), L["Red"]) and not redFound then
 				self:Sync(syncName.drakonidColor .. " " .. "Red")
-			elseif string.find(UnitName("Target"), "Blue") and not blueFound then
+			elseif string.find(UnitName("Target"), L["Blue"]) and not blueFound then
 				self:Sync(syncName.drakonidColor .. " " .. "Blue")
-			elseif string.find(UnitName("Target"), "Green") and not greenFound then
+			elseif string.find(UnitName("Target"), L["Green"]) and not greenFound then
 				self:Sync(syncName.drakonidColor .. " " .. "Green")
-			elseif string.find(UnitName("Target"), "Black") and not blackFound then
+			elseif string.find(UnitName("Target"), L["Black"]) and not blackFound then
 				self:Sync(syncName.drakonidColor .. " " .. "Black")
-			elseif string.find(UnitName("Target"), "Bronze") and not bronzeFound then
+			elseif string.find(UnitName("Target"), L["Bronze"]) and not bronzeFound then
 				self:Sync(syncName.drakonidColor .. " " .. "Bronze")
 			end
 		end
@@ -531,7 +720,7 @@ function module:Event(msg)
 
 	elseif string.find(msg, L["trigger_mcFade"]) then
 		local _,_,mcFadePlayer,_ = string.find(msg, L["trigger_mcFade"])
-		if mcFadePlayer == "you" then mcFadePlayer = UnitName("Player") end
+		if mcFadePlayer == L["you"] then mcFadePlayer = UnitName("Player") end
 		self:Sync(syncName.mcFade .. " " .. mcFadePlayer)
 
 
@@ -555,7 +744,7 @@ function module:Event(msg)
 
 	elseif string.find(msg, L["trigger_curseFade"]) then
 		local _,_,curseFadePlayer,_ = string.find(msg, L["trigger_curseFade"])
-		if curseFadePlayer == "you" then curseFadePlayer = UnitName("Player") end
+		if curseFadePlayer == L["you"] then curseFadePlayer = UnitName("Player") end
 		self:Sync(syncName.curseFade .. " " .. curseFadePlayer)
 
 
@@ -568,7 +757,7 @@ function module:Event(msg)
 
 	elseif string.find(msg, L["trigger_wildPolymorphFade"]) then
 		local _,_,wildPolymorphFadePlayer,_ = string.find(msg, L["trigger_wildPolymorphFade"])
-		if wildPolymorphFadePlayer == "you" then wildPolymorphFadePlayer = UnitName("Player") end
+		if wildPolymorphFadePlayer == L["you"] then wildPolymorphFadePlayer = UnitName("Player") end
 		self:Sync(syncName.wildPolymorphFade .. " " .. wildPolymorphFadePlayer)
 
 
@@ -586,7 +775,7 @@ function module:Event(msg)
 
 	elseif string.find(msg, L["trigger_parryYou"]) and self.db.profile.parry then
 		if UnitName("Target") ~= nil and UnitName("TargetTarget") ~= nil then
-			if UnitName("Target") == "Nefarian" and UnitName("TargetTarget") ~= UnitName("Player") then
+			if UnitName("Target") == module.translatedName and UnitName("TargetTarget") ~= UnitName("Player") then
 				self:ParryYou()
 			end
 		end
@@ -657,7 +846,7 @@ function module:Mc(rest)
 	self:Bar(rest..L["bar_mc"], timer.mcDur, icon.mc, true, color.mc)
 	self:Message(rest..L["msg_mc"], "Urgent", false, nil, false)
 
-	if UnitClass("Player") == "Mage" or UnitClass("Player") == "Warlock" then
+	if PlayerIs("Mage") or PlayerIs("Warlock") then
 		self:WarningSign(icon.mc, 1)
 		self:Sound("Info")
 	end
@@ -743,7 +932,7 @@ function module:LandingNow()
 		self:Bar(L["bar_fearCd"], timer.fearFirstCd, icon.fear, true, color.fearCd)
 		self:DelayedBar(timer.fearFirstCd, L["bar_fearSoon"], timer.fearSoon, icon.fear, true, color.fearSoon)
 
-		if UnitClass("Player") == "Warrior" then
+		if PlayerIs("Warrior") then
 			self:DelayedWarningSign(timer.fearFirstCd - 3.5, icon.berserker, 1)
 			self:DelayedSound(timer.fearFirstCd - 3.5, "BikeHorn")
 		end
@@ -800,7 +989,7 @@ function module:Fear()
 	self:DelayedBar(timer.fearCast, L["bar_fearCd"], timer.fearCd, icon.fear, true, color.fearCd)
 	self:DelayedBar(timer.fearCast + timer.fearCd, L["bar_fearSoon"], timer.fearSoon, icon.fear, true, color.fearSoon)
 
-	if UnitClass("Player") == "Warrior" then
+	if PlayerIs("Warrior") then
 		self:DelayedWarningSign(timer.fearCast + timer.fearCd - 3.5, icon.berserker, 1)
 		self:DelayedSound(timer.fearCast + timer.fearCd - 3.5, "BikeHorn")
 	end
@@ -811,7 +1000,7 @@ function module:Curse(rest)
 
 	self:Bar(rest..L["bar_curseDur"], timer.curseDur, icon.curse, true, color.curseDur)
 
-	if UnitClass("Player") == "Mage" or UnitClass("Player") == "Druid" then
+	if PlayerIs("Mage") or PlayerIs("Druid") then
 		self:Message(rest..L["msg_curse"], "Urgent", false, nil, false)
 		self:Sound("Info")
 		self:WarningSign(icon.curse, timer.curseDur)
@@ -833,7 +1022,7 @@ function module:ClassCall(rest)
 	self:Bar(rest.." "..L["bar_classCall"], timer.classCallDur, icon.classCall, true, color.classCallDur)
 	self:Message(L["msg_classCall_"..rest], "Positive", false, nil, false)
 
-	if UnitClass("Player") == rest then
+	if UnitClass("Player") == BC[rest] then
 		self:Sound("Beware")
 		self:WarningSign(icon[rest], 2, true, "YOUR CLASS CALL")
 	end
@@ -855,7 +1044,7 @@ end
 function module:WildPolymorph(rest)
 	self:Bar(rest..L["bar_wildPolymorph"], timer.wildPolymorph, icon.wildPolymorph, true, color.wildPolymorph)
 	
-	if UnitClass("Player") == "Priest" or UnitClass("Player") == "Paladin" then
+	if PlayerIs("Priest") or PlayerIs("Paladin") then
 		self:Message(rest..L["msg_wildPolymorph"], "Urgent", false, nil, false)
 		self:Sound("Info")
 		self:WarningSign(icon.wildPolymorph, 0.7)

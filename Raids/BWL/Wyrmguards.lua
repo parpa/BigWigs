@@ -305,23 +305,23 @@ function module:IdentifyVulnerability(school)
 	if not self.db.profile.vulnerability or not type(school) == "string" then return end
 	vulnerability = school
 	
-	if vulnerability == "Nature" and bwWyrmguardsNatureBar == false then
+	if vulnerability == L["nature"] and bwWyrmguardsNatureBar == false then
 		self:Bar(format(L["vuln_bar"], school), timer.vulnerability, icon.nature, true, "green")
 		bwWyrmguardsNatureBar = true
 	end
-	if vulnerability == "Frost" and bwWyrmguardsFrostBar == false then
+	if vulnerability == L["frost"] and bwWyrmguardsFrostBar == false then
 		self:Bar(format(L["vuln_bar"], school), timer.vulnerability, icon.frost, true, "blue")
 		bwWyrmguardsFrostBar = true
 	end
-	if vulnerability == "Fire" and bwWyrmguardsFireBar == false then
+	if vulnerability == L["fire"] and bwWyrmguardsFireBar == false then
 		self:Bar(format(L["vuln_bar"], school), timer.vulnerability, icon.fire, true, "red")
 		bwWyrmguardsFireBar = true
 	end
-	if vulnerability == "Arcane" and bwWyrmguardsArcaneBar == false then
+	if vulnerability == L["arcane"] and bwWyrmguardsArcaneBar == false then
 		self:Bar(format(L["vuln_bar"], school), timer.vulnerability, icon.arcane, true, "pink")
 		bwWyrmguardsArcaneBar = true
 	end
-	if vulnerability == "Shadow" and bwWyrmguardsShadowBar == false then
+	if vulnerability == L["shadow"] and bwWyrmguardsShadowBar == false then
 		self:Bar(format(L["vuln_bar"], school), timer.vulnerability, icon.shadow, true, "black")
 		bwWyrmguardsShadowBar = true
 	end
